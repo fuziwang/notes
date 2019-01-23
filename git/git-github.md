@@ -1,4 +1,4 @@
-## Git 与 GitHub
+## GitHub
 
 ### 远程仓库
 
@@ -51,7 +51,7 @@ The key's randomart image is:
 
 当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。
 
-### 添加远程库
+### 提交代码到远程仓库
 
 现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，真是一举多得。
 
@@ -68,26 +68,23 @@ The key's randomart image is:
 现在，我们根据GitHub的提示，在本地的`learngit`仓库下运行命令：
 
 ```bash
-$ git remote add origin git@github.com:fuziwang/learngit.git
+~/learngit(master) » git remote add origin https://github.com/fuziwang/learngit.git
 ```
-
-请千万注意，把上面的`fuziwang`替换成你自己的GitHub账户名，否则，你在本地关联的就是我的远程库，关联没有问题，但是你以后推送是推不上去的，因为你的SSH Key公钥不在我的账户列表中。
 
 添加后，远程库的名字就是`origin`，这是Git默认的叫法，也可以改成别的，但是`origin`这个名字一看就知道是远程库。
 
 下一步，就可以把本地库的所有内容推送到远程库上：
 
 ```bash
-$ git push -u origin master
-Counting objects: 20, done.
-Delta compression using up to 4 threads.
-Compressing objects: 100% (15/15), done.
-Writing objects: 100% (20/20), 1.64 KiB | 560.00 KiB/s, done.
-Total 20 (delta 5), reused 0 (delta 0)
-remote: Resolving deltas: 100% (5/5), done.
-To github.com:michaelliao/learngit.git
+~/learngit(master) » git push -u origin master                   
+Counting objects: 43, done.
+Compressing objects: 100% (38/38), done.
+Writing objects: 100% (43/43), 3.57 KiB | 0 bytes/s, done.
+Total 43 (delta 14), reused 0 (delta 0)
+remote: Resolving deltas: 100% (14/14), done.
+To https://github.com/fuziwang/learngit.git
  * [new branch]      master -> master
-Branch 'master' set up to track remote branch 'master' from 'origin'.
+分支 master 设置为跟踪来自 origin 的远程分支 master。
 ```
 
 把本地库的内容推送到远程，用`git push`命令，实际上是把当前分支`master`推送到远程。
@@ -101,41 +98,92 @@ Branch 'master' set up to track remote branch 'master' from 'origin'.
 从现在起，只要本地作了提交，就可以通过命令：
 
 ```bash
-$ git push origin master
+~/learngit(master) » git push origin master
 ```
 
 把本地`master`分支的最新修改推送至GitHub，现在，你就拥有了真正的分布式版本库！
 
-### 从远程库克隆
+**原理图如下：**
 
-上次我们讲了先有本地库，后有远程库的时候，如何关联远程库。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190123211213439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Z1eml3YW5n,size_16,color_FFFFFF,t_70)
 
-现在，假设我们已经创建了远程库，然后，从远程库克隆。
+### 将远程仓库代码更新到本地
 
-![克隆](https://upload-images.jianshu.io/upload_images/12817540-bf13da38d9a0f76f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-现在，远程库已经准备好了，下一步是用命令`git clone`克隆一个本地库：
+首先我们新建一文件夹：learngit，进入该文件夹后使用git 指令：
 
 ```bash
-~ » git clone git@github.com:fuziwang/learngit.git
-Cloning into 'gitskills'...
-remote: Counting objects: 3, done.
-remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 3
-Receiving objects: 100% (3/3), done.
+git clone https://github.com/fuziwang/learngit
 ```
 
-注意把Git库的地址换成你自己的，然后进入`learngit`目录看看，已经有上述的文件了：
+指令执行完毕后， 就在该文件夹下生成一份副本啦（相当于多人协作时另一台设备上的工程文件），**原理图如下：**
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190123211200696.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Z1eml3YW5n,size_16,color_FFFFFF,t_70)
+
+接下来， 讨论`git pull`、 `git fetch` 、 `git merge`的关系：
+
++ `git fetch` 相当于是从远程获取最新到本地，不会自动`merge` 
++ `git pull`：相当于是从远程获取最新版本并`merge`到本地 在实际使用中，`git fetch`更安全一些
+
+### 更新到本地仓库时解决冲突
+
+有两种方式处理冲突: 放弃本地修改或 解决冲突后提交本地修改
+
++ 放弃本地修改
+
+放弃本地修改意味着将远程仓库的代码完全覆盖本地仓库以及本地工作区间， 如果对git的指令不熟悉那大可以将本地工程完全删除，然后再重新拷贝一次（`git clone`）。
+
+当然， git如此强大没必要用这么原始的方法，可以让本地仓库代码覆盖本地修改，然后更新远程仓库代码； 
+
+本地仓库代码完全覆盖本地工作区间，具体指令如下：
 
 ```bash
-~ » cd learngit                                                  
-------------------------------------------------------------
-~/learngit(master) » ls                                          
-LICENSE  readme.txt
+git checkout HEAD .
 ```
 
-如果有多个人协作开发，那么每个人各自从远程克隆一份就可以了。
+然后更新远程仓库的代码就不会出现冲突了。
 
-你也许还注意到，GitHub给出的地址不止一个，还可以用`https://github.com/fuziwang/learngit.git`这样的地址。实际上，Git支持多种协议，默认的`git://`使用ssh，但也可以使用`https`等其他协议。
++ 解决冲突后提交本地修改
 
-使用`https`除了速度慢以外，还有个最大的麻烦是每次推送都必须输入口令，但是在某些只开放http端口的公司内部就无法使用`ssh`协议而只能用`https`。
+解决冲突后提交本地修改的思路大概如下：
 
+将本地修改的代码放在缓存区， 然后从远程仓库拉取最新代码，拉取成功后再从缓存区将修改的代码取出， 这样最新代码跟本地修改的代码就会混杂在一起， 手工解决冲突后， 提交解决冲突后的代码。
+
+将本地修改放入缓存区(成功后本地工作区间的代码跟本地仓库代码会同步)， 具体指令：
+
+```bash
+git stash
+```
+
+从远程仓库获取最新代码，然后， 取出本地修改的代码， 具体指令：
+
+```bash
+git pull
+git stash pop
+```
+
+随后手工解决冲突即可！
+
+## Git图解
+
+### 基本用法
+
+![](https://images0.cnblogs.com/i/66979/201406/262308046017546.jpg)
+
+上面的四条命令在工作目录、暂存目录(也叫做索引)和仓库之间复制文件。
+
+- `git add files` 把当前文件放入暂存区域。
+- `git commit` 给暂存区域生成快照并提交。
+- `git reset -- files` 用来撤销最后一次`git add files`，你也可以用`git reset` 撤销所有暂存区域文件。（操作对象是HEAD）
+- `git checkout -- files` 把文件从暂存区域复制到工作目录，用来丢弃本地修改。（目的是working Directory）
+
+![](https://images0.cnblogs.com/i/66979/201406/262311265392839.jpg)
+
+### 工作区、版本库、暂存区
+
+![](https://images0.cnblogs.com/blog/66979/201412/191735587664863.png)
+
+### Git文件状态
+
+![](https://images0.cnblogs.com/blog/168097/201308/07173755-e9cd02568038429e9546269a231adc94.png)
+
+在工作目录中的文件被分为两种状态，一种是已跟踪状态(tracked)，另一种是未跟踪状态(untracked)。只有处于已跟踪状态的文件才被纳入GIT的版本控制。
