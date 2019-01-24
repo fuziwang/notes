@@ -66,6 +66,8 @@ Markdown 是一种轻量级的「标记语言」，Markdown的优点很多，目
 ```markdown
 相对路径 ![](images/01.png)
 绝对路径 ![](images/https://github.com/fuziwang)
+
+[百度一下，你就知道](http://www.baidu.com)
 ```
 
 ### 粗体与斜体
