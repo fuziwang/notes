@@ -76,9 +76,9 @@ git pull [remote] [branch]
 
 ### Git 三个区域、四种状态
 
-![](01.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190124203445282.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Z1eml3YW5n,size_16,color_FFFFFF,t_70)
 
-![](02.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190124203453420.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Z1eml3YW5n,size_16,color_FFFFFF,t_70)
 
 ### Git GUI
 
@@ -86,7 +86,7 @@ git pull [remote] [branch]
 + 百度搜索 `SourceTree` 并下载；安装并注册 `SourceTree`；用 `SourceTree` 体验 `Git` 基本操作；
 + 在 `Hbuilder` 中安装 `EGit` 插件；用 `EGit` 体验 `Git` 基本操作；
 
-![](03.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190124203501265.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Z1eml3YW5n,size_16,color_FFFFFF,t_70)
 
 ### Git 配置
 
@@ -152,3 +152,55 @@ vim ~/.gitconfig
 git config –-global credential.helper wincred
 ```
 
+### Git 协议
+
++ **本地协议**
+
+```bash
+# 克隆本地仓库
+git clone /c/wd/test.git
+
+# 克隆本地仓库，不建议使用 file:// 
+git clone file:///c/wd/test.git
+
+# 添加远程仓库的链接
+git remote add origin /c/wd/test.git
+```
+
++ **Git 协议**
+
+```bash
+# 克隆远程仓库
+git clone git://server_ip/test.git
+
+# 添加远程仓库的链接
+git remote add origin git://server_ip/test.git
+```
+
++ **HTTP 协议**
+
+```bash
+# 克隆远程仓库
+git clone https://github.com/wangding/test.git
+
+# 添加远程仓库的链接
+git remote add origin https://github.com/wangding/test.git
+```
+
++ **SSH 协议**
+
+```bash
+# 克隆远程仓库，一般写成简短的命令
+git clone ssh://git@github.com/wangding/test.git
+git clone git@github.com:wangding/test.git
+
+# 添加远程仓库的链接
+git remote add origin git@github.com:wangding/test.git
+
+# 生成 RSA 密钥对
+ssh-Keygen -t rsa -C "your email"
+
+# 在 Github 网站添加公钥
+
+# 使用 SSH 协议，克隆仓库或者添加远程链接
+```
