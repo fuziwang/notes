@@ -540,7 +540,7 @@ My stupid boss still prefers SVN.
 
 你可以删掉最后一行，手动把文件恢复到上一个版本的状态。如果用`git status`查看一下：
 
-```
+```bash
 ~/learngit(master*) » git status                                 
 # 位于分支 master
 # 尚未暂存以备提交的变更：

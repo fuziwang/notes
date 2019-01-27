@@ -204,3 +204,78 @@ ssh-Keygen -t rsa -C "your email"
 
 # 使用 SSH 协议，克隆仓库或者添加远程链接
 ```
+
+### Git 分支
+
+**冲突解决**
+
++ 在不同分支上，修改同一个文件；
+
++ 不同的人，修改了同一个文件；
+
++ 不同的仓库，修改了同一个文件；
+
++ 冲突只在合并分支的时候才会发生；
+
++ 发生冲突并不可怕，冲突的代码不会丢失；
+
++ 解决冲突，重新提交，commit 时不要给 message；
+
+**分支操作**
+
+```bash
+# 创建分支 foo
+git branch foo   
+    
+# 切换到分支 foo
+git checkout foo
+
+# 创建分支并同时切换到 foo，一步做到
+git checkout -b foo
+
+# 修改分支名字
+git branch –m old_name new_name
+git branch –M old_name new_name 强制执行   
+    
+# 删除分支 foo
+git branch -d foo
+git branch –D foo 强制执行
+
+# 列出远程分支
+git branch –r
+# 列出本地分支
+git branch -v
+
+# 查看已合并的分支
+git branch --merged
+git branch --no-merged
+    
+# 列出远程合并的分支
+git branch -r --merged
+
+# 取出远程 foo 分支
+git checkout –t origin/foo
+
+# 推送远程分支
+git push origin <space>:<remote branch>
+git fetch -p
+    
+# 合并分支
+git merge <branch name>
+
+# 合并分支，拒绝 fast forward，产生合并 commit
+git merge –-no-ff
+
+# 保存进度
+git stash
+    
+# 弹出进度
+git stash pop
+
+# 查看 stash 列表
+git stash list
+
+# 删除 stash 列表
+git stash clear
+```
+
